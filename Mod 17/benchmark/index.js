@@ -4,9 +4,9 @@ const { quickSort } = require("./sort")
 const { linearSearch, binarySearch } = require("./search");
 
 const numbers = [];
-for (let i = 1; i <= 20000; i++) {
+for (let i = 1; i <= 40000; i++) {
   // populate the array with the numbers 1 to 1,000,000
-  numbers.push(i);
+  numbers.push(Math.floor(Math.random() * 10000) + 1);
 }
 
 // grab the last number in the array as the number we want to find
@@ -32,22 +32,43 @@ const suite = new Benchmark.Suite();
 //   .run();
 // run: node Mod\ 17/Lesson\ 3/benchmark/index.js
 
-suite
-  .add("bubble sort", function () {
-    const testArray = [...numbers];
 
-    bubbleSort(testArray);
-  })
-  .add("quick sort", function () {
+// suite
+//   .add("bubble sort", function () {
+//     const testArray = [...numbers];
+
+//     bubbleSort(testArray);
+//   })
+//   .add("quick sort", function () {
+//     const testArray = [...numbers];
+//     console.log(testArray)
+//     quickSort(testArray);
+//   })
+//   .on("complete", function () {
+//     this.forEach((result) =>
+//       console.log(
+//         `${result.name} averaged ${result.stats.mean * 1000} milliseconds.`
+//       )
+//     );
+//   })
+//   .run();
+
+
+suite
+  .add('quick sort', function() {
     const testArray = [...numbers];
 
     quickSort(testArray);
   })
-  .on("complete", function () {
-    this.forEach((result) =>
-      console.log(
-        `${result.name} averaged ${result.stats.mean * 1000} milliseconds.`
-      )
-    );
+  .add('js sort', function() {
+    const testArray = [...numbers];
+
+    // benchmark the built-in sort method
+    testArray.sort((a, b) => {
+      return a - b;
+    });
+  })
+  .on('complete', function() {
+    this.forEach(result => console.log(`${result.name} averaged ${result.stats.mean*1000} milliseconds.`));
   })
   .run();
