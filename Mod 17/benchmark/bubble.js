@@ -1,5 +1,5 @@
 const Benchmark = require('benchmark');
-const { bubbleSort } = require('./sort');
+const { bubbleSort } = require('../benchmark/sort');
 
 const numbers = [];
 for (let i = 0; i < 10000; i++) {
@@ -18,3 +18,5 @@ suite
     this.forEach(result => console.log(`${result.name} averaged ${result.stats.mean*1000} milliseconds.`));
   })
   .run();
+
+  
