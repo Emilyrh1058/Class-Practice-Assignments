@@ -1,16 +1,18 @@
 const Benchmark = require("benchmark");
+const { linearSearch, binarySearch } = require("./search");
 const { bubbleSort } = require("./sort");
 const { quickSort } = require("./sort")
-const { linearSearch, binarySearch } = require("./search");
+const { mostDuplicates } = require('./dupes');
+const { optimizedDuplicates } = require('./dupes');
 
 const numbers = [];
-for (let i = 1; i <= 40000; i++) {
+for (let i = 1; i < 20000; i++) {
   // populate the array with the numbers 1 to 1,000,000
   numbers.push(Math.floor(Math.random() * 10000) + 1);
 }
 
 // grab the last number in the array as the number we want to find
-const target = numbers[numbers.length - 1];
+// const target = numbers[numbers.length - 1];
 
 const suite = new Benchmark.Suite();
 
@@ -54,19 +56,37 @@ const suite = new Benchmark.Suite();
 //   .run();
 
 
+// suite
+//   .add('quick sort', function() {
+//     const testArray = [...numbers];
+
+//     quickSort(testArray);
+//   })
+//   .add('js sort', function() {
+//     const testArray = [...numbers];
+
+//     // benchmark the built-in sort method
+//     testArray.sort((a, b) => {
+//       return a - b;
+//     });
+//   })
+//   .on('complete', function() {
+//     this.forEach(result => console.log(`${result.name} averaged ${result.stats.mean*1000} milliseconds.`));
+//   })
+//   .run();
+
 suite
-  .add('quick sort', function() {
-    const testArray = [...numbers];
-
-    quickSort(testArray);
+  .add('duplicates test', function() {
+    mostDuplicates(numbers);
   })
-  .add('js sort', function() {
-    const testArray = [...numbers];
+  .on('complete', function() {
+    this.forEach(result => console.log(`${result.name} averaged ${result.stats.mean*1000} milliseconds.`));
+  })
+  .run();
 
-    // benchmark the built-in sort method
-    testArray.sort((a, b) => {
-      return a - b;
-    });
+  suite
+  .add('optimized test', function() {
+    optimizedDuplicates(numbers);
   })
   .on('complete', function() {
     this.forEach(result => console.log(`${result.name} averaged ${result.stats.mean*1000} milliseconds.`));
